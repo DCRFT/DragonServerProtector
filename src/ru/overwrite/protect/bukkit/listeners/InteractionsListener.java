@@ -4,11 +4,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import ru.overwrite.protect.bukkit.ServerProtectorManager;
 import ru.overwrite.protect.bukkit.api.ServerProtectorAPI;
+
 
 public class InteractionsListener implements Listener {
 	
@@ -40,5 +42,10 @@ public class InteractionsListener implements Listener {
     	Player p = e.getPlayer();
     	api.handleInteraction(p, e);
     }
-    
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerInventoryOpen(InventoryOpenEvent e) {
+        if (instance.login.isEmpty()) return;
+        Player p = (Player) e.getPlayer();
+        api.handleInteraction(p, e);
+    }
 }
